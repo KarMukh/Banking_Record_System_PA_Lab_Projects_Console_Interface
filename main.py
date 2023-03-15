@@ -7,26 +7,22 @@ class Account:
     account_number = 0
     name = ''
     deposit = 0
-    type = ''
 
     def create_account(self):
         self.account_number = int(input("Enter the account number : "))
         self.name = input("Enter the account holder name : ")
-        self.type = input("Enter the type of account [C/S] : ")
-        self.deposit = float(input("Enter The Initial amount(>=500 for Saving and >=1000 for current"))
+        self.deposit = float(input("Enter the initial amount :"))
         print("\n\n\nAccount Created")
 
     def show_account(self):
-        print("Account Number : ", self.account_number)
-        print("Account Holder Name : ", self.name)
-        print("Type of Account", self.type)
+        print("Account number : ", self.account_number)
+        print("Account holder name : ", self.name)
         print("Balance : ", self.deposit)
 
     def modify_account(self):
-        print("Account Number : ", self.account_number)
-        self.name = input("Modify Account Holder Name :")
-        self.type = input("Modify type of Account :")
-        self.deposit = float(input("Modify Balance :"))
+        print("Account number : ", self.account_number)
+        self.name = input("Modify account holder name :")
+        self.deposit = float(input("Modify balance :"))
 
     def deposit_amount(self, amount):
         self.deposit += amount
@@ -39,7 +35,7 @@ class Account:
         self.deposit += amount
 
     def report(self):
-        print(self.account_number, " ", self.name, " ", self.type, " ", self.deposit)
+        print(self.account_number, " ", self.name, " ", self.deposit)
 
     def get_account_number(self):
         return self.account_number
@@ -47,15 +43,14 @@ class Account:
     def get_account_holder_name(self):
         return self.name
 
-    def get_account_type(self):
-        return self.type
-
     def get_deposit(self):
         return self.deposit
 
 
 def intro():
-    print("\t\t\t\tBANK REPORT SYSTEM")
+    print("\n\t\t\t\t*** BANK REPORT SYSTEM ***")
+
+    print("\nPress enter and make your choice ")
 
     input()
 
@@ -72,27 +67,25 @@ def display_all():
         infile = open('accounts.data', 'rb')
         mylist = pickle.load(infile)
         for item in mylist:
-            print(item.account_number, " ", item.name, " ", item.type, " ", item.deposit)
+            print(item.account_number, " ", item.name, " ", item.deposit)
         infile.close()
     else:
-        print("No records to display")
+        print("No records to display!")
 
 
-def display_sp(num):
+def show_account_balance(num):
     file = pathlib.Path("accounts.data")
     if file.exists():
         infile = open('accounts.data', 'rb')
         mylist = pickle.load(infile)
         infile.close()
-        found = False
         for item in mylist:
             if item.account_number == num:
-                print("Your account Balance is = ", item.deposit)
-                found = True
+                print("Your account balance is = ", item.deposit)
+                # found = True
     else:
-        print("No records to Search")
-    # if not found:
-    #     print("No existing record with this number")
+        print("No records to Search!")
+
 
 
 def deposit_and_withdraw(num1, num2):
@@ -107,16 +100,15 @@ def deposit_and_withdraw(num1, num2):
                 if num2 == 1:
                     amount = float(input("Enter the amount to deposit : "))
                     item.deposit += amount
-                    print("Your account is updated")
+                    print("Your account is updated!")
                 elif num2 == 2:
                     amount = float(input("Enter the amount to withdraw : "))
                     if amount <= item.deposit:
                         item.deposit -= amount
                     else:
-                        print("You cannot withdraw larger amount")
+                        print("You cannot withdraw larger amount!")
 
-    # else:
-    #     print("No records to Search")
+
         outfile = open('new_accounts.data', 'wb')
         pickle.dump(mylist, outfile)
         outfile.close()
@@ -131,24 +123,22 @@ def transfer_money():
         infile.close()
         os.remove('accounts.data')
         for item in mylist:
-            account_number1 = int(input("Enter account number to withdraw from "))
+            account_number1 = int(input("Enter account number to transfer from :"))
             if item.account_number == account_number1:
-                # if num2 == 1:
-                amount = float(input("Enter the amount to transfer : "))
+                amount = float(input("Enter the amount to transfer :"))
                 if amount <= item.deposit:
                     item.deposit -= amount
-                    print("Your account is updated")
+                    print("Withdraw account is updated!")
                     for item1 in mylist:
-                        account_number2 = int(input("Enter account number to transfer to "))
+                        account_number2 = int(input("Enter account number to transfer to :"))
                         if item1.account_number == account_number2:
                             item1.deposit += amount
-                            print("Your account is updated")
+                            print("Deposit account is updated!")
 
                 else:
-                    print("You cannot withdraw larger amount")
+                    print("You cannot withdraw larger amount!")
 
-    # else:
-    #     print("No records to Search")
+
         outfile = open('new_accounts.data', 'wb')
         pickle.dump(mylist, outfile)
         outfile.close()
@@ -182,8 +172,7 @@ def modify_account(num):
         for item in old_list:
             if item.account_number == num:
                 item.name = input("Enter the account holder name : ")
-                item.type = input("Enter the account Type : ")
-                item.deposit = float(input("Enter the Amount : "))
+                item.deposit = float(input("Enter the amount : "))
 
         outfile = open('new_accounts.data', 'wb')
         pickle.dump(old_list, outfile)
@@ -212,7 +201,6 @@ num = 0
 intro()
 
 while choice != 9:
-    # system("cls");
     print("\tMAIN MENU")
     print("\t1. NEW ACCOUNT")
     print("\t2. DEPOSIT AMOUNT")
@@ -225,28 +213,28 @@ while choice != 9:
     print("\t9. EXIT")
     print("\tSelect Your Option (1-9) ")
     choice = input()
-    # system("cls");
+
 
     if choice == '1':
         write_account()
     elif choice == '2':
-        num = int(input("\tEnter the account number. : "))
+        num = int(input("\tEnter the account number to deposit to : "))
         deposit_and_withdraw(num, 1)
     elif choice == '3':
-        num = int(input("\tEnter the account number. : "))
+        num = int(input("\tEnter the account number to withdraw from : "))
         deposit_and_withdraw(num, 2)
     elif choice == '4':
         transfer_money()
     elif choice == '5':
-        num = int(input("\tEnter the account number. : "))
-        display_sp(num)
+        num = int(input("\tEnter the account number to show the balance : "))
+        show_account_balance(num)
     elif choice == '6':
         display_all()
     elif choice == '7':
-        num = int(input("\tEnter the account number. : "))
+        num = int(input("\tEnter the account number to delete : "))
         delete_account(num)
     elif choice == '8':
-        num = int(input("\tEnter the account number. : "))
+        num = int(input("\tEnter the account number to modify : "))
         modify_account(num)
     elif choice == '9':
         print("\tThanks for using bank report system")
@@ -254,4 +242,4 @@ while choice != 9:
     else:
         print("Invalid choice")
 
-    choice = input("Enter your choice : ")
+    choice = input("Press enter and make your choice ")

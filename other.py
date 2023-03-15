@@ -11,25 +11,21 @@ class Account:
     account_number = 0
     name = ''
     deposit = 0
-    type = ''
 
     def create_account(self):
         self.account_number = int(input("Enter the account number : "))
         self.name = input("Enter the account holder name : ")
-        self.type = input("Enter the type of account [C/S] : ")
-        self.deposit = float(input("Enter The Initial amount(>=500 for Saving and >=1000 for current"))
+        self.deposit = float(input("Enter The Initial amount "))
         print("\n\n\nAccount Created")
 
     def show_account(self):
         print("Account Number : ", self.account_number)
         print("Account Holder Name : ", self.name)
-        print("Type of Account", self.type)
         print("Balance : ", self.deposit)
 
     def modify_account(self):
         print("Account Number : ", self.account_number)
         self.name = input("Modify Account Holder Name :")
-        self.type = input("Modify type of Account :")
         self.deposit = float(input("Modify Balance :"))
 
     def deposit_amount(self, amount):
@@ -43,7 +39,7 @@ class Account:
         self.deposit += amount
 
     def report(self):
-        print(self.account_number, " ", self.name, " ", self.type, " ", self.deposit)
+        print(self.account_number, " ", self.name, " ", self.deposit)
 
     def get_account_number(self):
         return self.account_number
@@ -51,8 +47,6 @@ class Account:
     def get_account_holder_name(self):
         return self.name
 
-    def get_account_type(self):
-        return self.type
 
     def get_deposit(self):
         return self.deposit
@@ -76,13 +70,13 @@ def display_all():
         infile = open('accounts.data', 'rb')
         mylist = pickle.load(infile)
         for item in mylist:
-            print(item.account_number, " ", item.name, " ", item.type, " ", item.deposit)
+            print(item.account_number, " ", item.name, " ", item.deposit)
         infile.close()
     else:
         print("No records to display")
 
 
-def display_sp(num):
+def show_account_balance(num):
     file = pathlib.Path("accounts.data")
     if file.exists():
         infile = open('accounts.data', 'rb')
@@ -95,8 +89,8 @@ def display_sp(num):
                 found = True
     else:
         print("No records to Search")
-    # if not found:
-    #     print("No existing record with this number")
+    if not found:
+        print("No existing record with this number")
 
 
 def deposit_and_withdraw(num1, num2):
@@ -186,7 +180,6 @@ def modify_account(num):
         for item in old_list:
             if item.account_number == num:
                 item.name = input("Enter the account holder name : ")
-                item.type = input("Enter the account Type : ")
                 item.deposit = float(input("Enter the Amount : "))
 
         outfile = open('new_accounts.data', 'wb')
@@ -243,7 +236,7 @@ while choice != 9:
         transfer_money()
     elif choice == '5':
         num = int(input("\tEnter the account number. : "))
-        display_sp(num)
+        show_account_balance(num)
     elif choice == '6':
         display_all()
     elif choice == '7':
